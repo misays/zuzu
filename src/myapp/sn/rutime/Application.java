@@ -5,6 +5,7 @@ import java.sql.Connection;
 import javax.swing.JOptionPane;
 
 import myapp.sn.database.DbManager;
+import myapp.sn.ui.dashbord1;
 
 public class Application {
 
@@ -17,6 +18,11 @@ public class Application {
 			} catch (Exception e) {
 			JOptionPane.showMessageDialog (null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE );
 			}
+		
+		
+			dashbord1 dashbord = new dashbord1();
+			dashbord.afficher();
+		
 			
 
 	}

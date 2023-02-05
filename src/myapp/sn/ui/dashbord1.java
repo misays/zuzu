@@ -1,12 +1,20 @@
 package myapp.sn.ui;
+import myapp.sn.database.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.JButton;
 
 public class dashbord1 extends JFrame {
 	private JTextField textField;
@@ -21,8 +29,8 @@ public class dashbord1 extends JFrame {
 		panel.setLayout(null);
 		
 		JComboBox sexe = new JComboBox();
-		sexe.addItem("M");
-		sexe.addItem("F");
+		sexe.addItem("Masculin");
+		sexe.addItem("Feminin");
 		sexe.setBounds(49, 139, 36, 21);
 		panel.add(sexe);
 		
@@ -45,6 +53,7 @@ public class dashbord1 extends JFrame {
 		textField_1.setColumns(10);
 		
 		txtHbhbb = new JTextField();
+		txtHbhbb.setToolTipText("");
 		txtHbhbb.setBounds(105, 97, 96, 19);
 		panel.add(txtHbhbb);
 		txtHbhbb.setColumns(10);
@@ -79,5 +88,52 @@ public class dashbord1 extends JFrame {
 
 		list_classe.setBounds(134, 139, 67, 21);
 		panel.add(list_classe);
+		
+		JScrollPane etudiant_tab = new JScrollPane();
+		//colonne et ligne
+		String[] entete = {"Id","Nom", "Prenom", "Date de naissance", "Sexe", "Classe"};
+		String[][] donnees = {{"", "", "", "", "",""}};
+		JTable etudiant_tabs = new JTable(donnees, entete);
+		etudiant_tab.setViewportView(etudiant_tabs);
+		
+		
+		etudiant_tab.setBounds(246, 31, 483, 168);
+		panel.add(etudiant_tab);
+		
+		JButton btnAddEtu = new JButton("Ajouter");
+		//Quand on clique sur le bouton ajouter
+		btnAddEtu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//On récupère les données saisies
+				String nom = textField.getText();
+				String prenom = textField_1.getText();
+				String date_naissance = txtHbhbb.getText();
+				//String sexe = (String) sexe.getSelectedItem();
+				String sex = (String) sexe.getSelectedItem();
+				String classe = (String) list_classe.getSelectedItem();
+				//on envoie les données saisies dans la base de données
+				EleveDb etu = new EleveDb();
+				try {
+					etu.insert(nom, prenom, date_naissance, classe, sex);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				//On effface les données saisies
+				textField.setText("");
+				textField_1.setText("");
+				txtHbhbb.setText("");
+				
+
+				
+				
+			}
+		});
+	
+		btnAddEtu.setBounds(10, 191, 85, 21);
+		panel.add(btnAddEtu);
+	}
+	public void afficher() {
+		this.setVisible(true);
 	}
 }
